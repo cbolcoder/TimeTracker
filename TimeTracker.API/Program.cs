@@ -1,6 +1,3 @@
-using TimeTracker.API.Repositories.TimeEntryRepository;
-using TimeTracker.API.Services.TimeEntryService;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

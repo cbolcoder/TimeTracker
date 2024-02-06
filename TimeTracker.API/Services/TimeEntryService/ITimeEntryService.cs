@@ -1,6 +1,4 @@
-﻿using TimeTracker.Shared.Models.TimeEntry;
-
-namespace TimeTracker.API.Services.TimeEntryService
+﻿namespace TimeTracker.API.Services.TimeEntryService
 {
     public interface ITimeEntryService
     {

@@ -1,7 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TimeTracker.API.Services.TimeEntryService;
-using TimeTracker.Shared.Entities;
-using TimeTracker.Shared.Models.TimeEntry;
 
 namespace TimeTracker.API.Controllers
 {
