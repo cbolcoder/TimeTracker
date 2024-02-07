@@ -23,10 +23,12 @@ namespace TimeTracker.API.Controllers
         public async Task<ActionResult<TimeEntryResponse>> GetTimeEntryById(int id)
         {
             var result = await _timeEntryService.GetTimeEntryById(id);
+
             if (result is null)
             {
                 return NotFound("Time Entry with provided Id was not found!");
             }
+
             return Ok(result);
         }
 
@@ -40,10 +42,12 @@ namespace TimeTracker.API.Controllers
         public async Task<ActionResult<List<TimeEntryResponse>>> UpdateTimeEntry(int id, TimeEntryUpdateRequest timeEntry)
         {
             var result = await _timeEntryService.UpdateTimeEntry(id, timeEntry);
+
             if (result is null)
             {
                 return NotFound("Time Entry with provided Id was not found!");
             }
+
             return Ok(result);
         }
 
@@ -51,10 +55,12 @@ namespace TimeTracker.API.Controllers
         public async Task<ActionResult> DeleteTimeEntry(int id)
         {
             var result = await _timeEntryService.DeleteTimeEntry(id);
+
             if (result is null)
             {
                 return NotFound("Time Entry with provided Id was not found!");
             }
+
             return Ok(result);
         }
     }
