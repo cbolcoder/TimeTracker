@@ -45,7 +45,7 @@ namespace TimeTracker.API.Services.TimeEntryService
 
             if (result is null)
             {
-                return null ;
+                return null;
             }
 
             return result.Adapt<TimeEntryResponse>();
@@ -53,16 +53,18 @@ namespace TimeTracker.API.Services.TimeEntryService
 
         public async Task<List<TimeEntryResponse>?> UpdateTimeEntry(int id, TimeEntryUpdateRequest request)
         {
-            var updatedEntry = request.Adapt<TimeEntry>();
+            try
+            {
+                var updatedEntry = request.Adapt<TimeEntry>();
 
-            var result = await _timeEntryRepo.UpdateTimeEntry(id, updatedEntry);
+                var result = await _timeEntryRepo.UpdateTimeEntry(id, updatedEntry);
 
-            if(result is null)
+                return result.Adapt<List<TimeEntryResponse>>();
+            }
+            catch (EntityNotFoundException)
             {
                 return null;
             }
-
-            return result.Adapt<List<TimeEntryResponse>>();
         }
     }
 }

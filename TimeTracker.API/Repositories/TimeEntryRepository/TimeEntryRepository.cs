@@ -56,13 +56,13 @@
             return timeEntry;
         }
 
-        public async Task<List<TimeEntry>?> UpdateTimeEntry(int id, TimeEntry timeEntry)
+        public async Task<List<TimeEntry>> UpdateTimeEntry(int id, TimeEntry timeEntry)
         {
             var dbTimeEntry = await _dataContext.TimeEntries.FindAsync(id);
 
             if(dbTimeEntry is null)
             {
-                return null;
+                throw new EntityNotFoundException($"Entity with {id} was not found.");
             }
 
             dbTimeEntry.Project = timeEntry.Project;
