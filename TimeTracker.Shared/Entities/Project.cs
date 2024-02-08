@@ -10,5 +10,6 @@ namespace TimeTracker.Shared.Entities
     {
         public required string Name { get; set; }
         public List<TimeEntry> TimeEntries { get; set; } = new List<TimeEntry>();
+        public ProjectDetails? ProjectDetails { get; set; }
     }
 }
