@@ -4,16 +4,6 @@
     {
         private readonly DataContext _dataContext;
 
-        private static List<TimeEntry> _timeEntries = new List<TimeEntry>
-        {
-            new TimeEntry
-            {
-                Id = 1,
-                Project = "Time Tracker App",
-                End = DateTime.Now.AddHours(1)
-            }
-        };
-
         public TimeEntryRepository(DataContext dataContext)
         {
             this._dataContext = dataContext;
