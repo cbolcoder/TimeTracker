@@ -33,16 +33,12 @@
 
         public async Task<List<TimeEntry>> GetAllTimeEntries()
         {
-            return await _dataContext.TimeEntries
-                .Include(te => te.Project)
-                .ToListAsync();
+            return await _dataContext.TimeEntries.ToListAsync();
         }
 
         public async Task<TimeEntry?> GetTimeEntryById(int id)
         {
-            var timeEntry = await _dataContext.TimeEntries
-                .Include(te => te.Project)
-                .FirstOrDefaultAsync(te => te.Id == id);
+            var timeEntry = await _dataContext.TimeEntries.FindAsync(id);
 
             return timeEntry;
         }
