@@ -12,23 +12,20 @@
         public async Task<List<TimeEntry>> CreateTimeEntry(TimeEntry timeEntry)
         {
             _dataContext.TimeEntries.Add(timeEntry);
+            await _dataContext.SaveChangesAsync();
 
-            await _dataContext.SaveChangesAsync(); 
-          
-            return await _dataContext.TimeEntries.ToListAsync();
+            return await GetAllTimeEntries();
         }
 
         public async Task<List<TimeEntry>?> DeleteTimeEntry(int id)
         {
             var dbTimeEntry = await _dataContext.TimeEntries.FindAsync(id);
-
             if (dbTimeEntry is null)
             {
                 return null;
             }
 
             _dataContext.TimeEntries.Remove(dbTimeEntry);
-
             await _dataContext.SaveChangesAsync();
 
             return await GetAllTimeEntries();
@@ -36,12 +33,16 @@
 
         public async Task<List<TimeEntry>> GetAllTimeEntries()
         {
-            return await _dataContext.TimeEntries.ToListAsync();
+            return await _dataContext.TimeEntries
+                .Include(te => te.Project)
+                .ToListAsync();
         }
 
         public async Task<TimeEntry?> GetTimeEntryById(int id)
         {
-            var timeEntry = await _dataContext.TimeEntries.FindAsync(id);
+            var timeEntry = await _dataContext.TimeEntries
+                .Include(te => te.Project)
+                .FirstOrDefaultAsync(te => te.Id == id);
 
             return timeEntry;
         }
@@ -49,19 +50,18 @@
         public async Task<List<TimeEntry>> UpdateTimeEntry(int id, TimeEntry timeEntry)
         {
             var dbTimeEntry = await _dataContext.TimeEntries.FindAsync(id);
-
-            if(dbTimeEntry is null)
+            if (dbTimeEntry is null)
             {
                 throw new EntityNotFoundException($"Entity with {id} was not found.");
             }
 
-            dbTimeEntry.Project = timeEntry.Project;
+            dbTimeEntry.ProjectId = timeEntry.ProjectId;
             dbTimeEntry.Start = timeEntry.Start;
             dbTimeEntry.End = timeEntry.End;
             dbTimeEntry.DateUpdated = DateTime.Now;
 
             await _dataContext.SaveChangesAsync();
-            
+
             return await GetAllTimeEntries();
         }
     }
