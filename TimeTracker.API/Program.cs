@@ -1,3 +1,5 @@
+using Mapster;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,6 +10,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<ITimeEntryRepository, TimeEntryRepository>();
 builder.Services.AddScoped<ITimeEntryService, TimeEntryService>();
 
@@ -20,6 +24,8 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
     app.UseSwaggerUI();
 }
 
+ConfigureMapster();
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -27,3 +33,11 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+void ConfigureMapster()
+{
+    TypeAdapterConfig<Project, ProjectResponse>.NewConfig()
+        .Map(dest => dest.Description, src => src.ProjectDetails != null ? src.ProjectDetails.Description : null)
+        .Map(dest => dest.StartDate, src => src.ProjectDetails != null ? src.ProjectDetails.StartDate : null)
+        .Map(dest => dest.EndDate, src => src.ProjectDetails != null ? src.ProjectDetails.EndDate : null);
+}

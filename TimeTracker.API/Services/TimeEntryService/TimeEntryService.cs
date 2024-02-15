@@ -22,10 +22,8 @@ namespace TimeTracker.API.Services.TimeEntryService
         public async Task<List<TimeEntryResponse>?> DeleteTimeEntry(int id)
         {
             var result = await _timeEntryRepo.DeleteTimeEntry(id);
-            if (result is null)
-            {
-                return null;
-            }
+
+            if (result is null) return null;
 
             return result.Adapt<List<TimeEntryResponse>>();
         }
@@ -37,13 +35,18 @@ namespace TimeTracker.API.Services.TimeEntryService
             return result.Adapt<List<TimeEntryResponse>>();
         }
 
+        public async Task<List<TimeEntryByProjectIdResponse>> GetAllTimeEntriesByProjectId(int projectId)
+        {
+            var result = await _timeEntryRepo.GetTimeEntriesByProjectId(projectId);
+
+            return result.Adapt<List<TimeEntryByProjectIdResponse>>();
+        }
+
         public async Task<TimeEntryResponse?> GetTimeEntryById(int id)
         {
             var result = await _timeEntryRepo.GetTimeEntryById(id);
-            if (result is null)
-            {
-                return null;
-            }
+            
+            if (result is null) return null;
 
             return result.Adapt<TimeEntryResponse>();
         }

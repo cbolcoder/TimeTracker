@@ -1,7 +1,6 @@
 ﻿namespace TimeTracker.Shared.Models.Project
 {
-    public record struct ProjectResponse(
-        int Id,
+    public record struct ProjectCreateRequest(
         string Name,
         string? Description,
         DateTime? StartDate,
