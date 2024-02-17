@@ -9,28 +9,6 @@
             this._dataContext = dataContext;
         }
 
-        public async Task<List<Project>> CreateProject(Project project)
-        {
-            _dataContext.Projects.Add(project);
-            await _dataContext.SaveChangesAsync();
-
-            return await GetAllProjects();
-        }
-
-        public async Task<List<Project>?> DeleteProject(int id)
-        {
-            var dbProject = await _dataContext.Projects.FindAsync(id);
-
-            if (dbProject is null) return null;
-
-            dbProject.IsDeleted = true;
-            dbProject.DateDeleted = DateTime.Now;
-
-            await _dataContext.SaveChangesAsync();
-
-            return await GetAllProjects();
-        }
-
         public async Task<List<Project>> GetAllProjects()
         {
             return await _dataContext.Projects.Where(p => !p.IsDeleted).ToListAsync();
@@ -43,6 +21,14 @@
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             return project;
+        }
+
+        public async Task<List<Project>> CreateProject(Project project)
+        {
+            _dataContext.Projects.Add(project);
+            await _dataContext.SaveChangesAsync();
+
+            return await GetAllProjects();
         }
 
         public async Task<List<Project>> UpdateProject(int id, Project project)
@@ -70,6 +56,20 @@
 
             dbProject.Name = project.Name;
             dbProject.DateUpdated = DateTime.Now;
+
+            await _dataContext.SaveChangesAsync();
+
+            return await GetAllProjects();
+        }
+
+        public async Task<List<Project>?> DeleteProject(int id)
+        {
+            var dbProject = await _dataContext.Projects.FindAsync(id);
+
+            if (dbProject is null) return null;
+
+            dbProject.IsDeleted = true;
+            dbProject.DateDeleted = DateTime.Now;
 
             await _dataContext.SaveChangesAsync();
 

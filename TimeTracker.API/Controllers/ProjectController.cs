@@ -24,7 +24,7 @@ namespace TimeTracker.API.Controllers
         {
             var result = await _projectService.GetProjectById(id);
 
-            if (result is null) return NotFound($"Entity with {id} was not found.");
+            if (result is null) return NotFound($"Entity with id:{id} was not found.");
 
             return Ok(result);
         }
@@ -40,7 +40,7 @@ namespace TimeTracker.API.Controllers
         {
             var result = await _projectService.UpdateProject(id, project);
 
-            if (result is null) return NotFound($"Entity with {id} was not found.");
+            if (result is null) return NotFound($"Entity with id:{id} was not found.");
 
             return Ok(result);
         }
@@ -50,7 +50,7 @@ namespace TimeTracker.API.Controllers
         {
             var result = await _projectService.DeleteProject(id);
 
-            if (result is null) return NotFound($"Entity with {id} was not found.");
+            if (result is null) return NotFound($"Entity with id:{id} was not found.");
 
             return Ok(result);
         }
