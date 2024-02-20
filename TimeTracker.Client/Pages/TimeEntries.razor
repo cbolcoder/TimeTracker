@@ -1,16 +1,48 @@
 ﻿@page "/timeentries"
-@using TimeTracker.Shared.Models.TimeEntry
 @inject HttpClient Http
 
 <PageTitle>Time Entries</PageTitle>
 <h3>Time Entries</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Duration</th>
+            <th>Project</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var timeEntry in timeEntries)
+        {
+            <tr>
+                <td>@timeEntry.Start</td>
+                <td>@timeEntry.End</td>
+                <td>@GetDuration(timeEntry.Start, timeEntry.End)</td>
+                <td>@timeEntry.Project.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>
 
 @code {
     private List<TimeEntryResponse> timeEntries = new List<TimeEntryResponse>();
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await Http.GetFromJsonAsync<List<TimeEntryResponse>>($"https://localhost:7256/api/timeentry");
+        var result = await Http.GetFromJsonAsync<List<TimeEntryResponse>>("api/timeentry");
         if (result != null) timeEntries = result;
+    }
+
+    private string GetDuration(DateTime? start, DateTime? end)
+    {
+        if(start != null && end != null)
+        {
+            var duration = end.Value - start.Value;
+            var result = $"{duration.Hours}h {duration.Minutes}m";
+            return result;
+        }
+        return string.Empty;
     }
 }
