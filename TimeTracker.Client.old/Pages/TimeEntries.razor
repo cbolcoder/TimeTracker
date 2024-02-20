@@ -1,0 +1,15 @@
+﻿@page "/timeentries"
+@inject HttpClient Http
+
+<PageTitle>Time Entries</PageTitle>
+<h3>Time Entries</h3>
+
+@code {
+    private List<TimeEntryResponse> timeEntries = new List<TimeEntryResponse>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await Http.GetFromJsonAsync<List<TimeEntryResponse>>($"https://localhost:7256/api/timeentry");
+        if (result != null) timeEntries = result;
+    }
+}
