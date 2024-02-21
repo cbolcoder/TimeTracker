@@ -4,6 +4,8 @@
 <PageTitle>Time Entries</PageTitle>
 <h3>Time Entries</h3>
 
+<ProjectSelector ProjectSelected="ProjectChanged" />
+
 <table>
     <thead>
         <tr>
@@ -11,6 +13,7 @@
             <th>End Date</th>
             <th>Duration</th>
             <th>Project</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -21,13 +24,24 @@
                 <td>@timeEntry.End</td>
                 <td>@GetDuration(timeEntry.Start, timeEntry.End)</td>
                 <td>@timeEntry.Project.Name</td>
+                <td>
+                    <button class="btn btn-primary" onclick="@(() => ShowProject(timeEntry.Project.Id))">
+                        Show Project
+                    </button>
+                </td>
             </tr>
         }
     </tbody>
 </table>
 
+@if (projectId > 0)
+{
+    <ProjectDetails ProjectId="projectId" />
+}
+
 @code {
     private List<TimeEntryResponse> timeEntries = new List<TimeEntryResponse>();
+    int projectId;
 
     protected override async Task OnInitializedAsync()
     {
@@ -37,12 +51,35 @@
 
     private string GetDuration(DateTime? start, DateTime? end)
     {
-        if(start != null && end != null)
+        if (start != null && end != null)
         {
             var duration = end.Value - start.Value;
             var result = $"{duration.Hours}h {duration.Minutes}m";
             return result;
         }
         return string.Empty;
+    }
+
+    private void ShowProject(int id)
+    {
+        if (projectId == id) return;
+
+        projectId = id;
+        StateHasChanged();
+    }
+
+    private async Task ProjectChanged(int projectId)
+    {
+        List<TimeEntryResponse>? result = null;
+        if (projectId == 0)
+        {
+            result = await Http.GetFromJsonAsync<List<TimeEntryResponse>>("api/timeentry");
+        }
+        else
+        {
+            result = await Http.GetFromJsonAsync<List<TimeEntryResponse>>($"api/timeentry/project/{projectId}");
+        }
+
+        if (result != null) timeEntries = result;
     }
 }
