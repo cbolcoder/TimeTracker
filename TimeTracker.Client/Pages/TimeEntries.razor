@@ -1,10 +1,9 @@
 ﻿@page "/timeentries"
-@inject HttpClient Http
+@inject ITimeEntryService TimeEntryService
+@implements IDisposable
 
 <PageTitle>Time Entries</PageTitle>
 <h3>Time Entries</h3>
-
-<ProjectSelector ProjectSelected="ProjectChanged" />
 
 <table>
     <thead>
@@ -17,7 +16,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var timeEntry in timeEntries)
+        @foreach (var timeEntry in TimeEntryService.TimeEntries)
         {
             <tr>
                 <td>@timeEntry.Start</td>
@@ -40,13 +39,12 @@
 }
 
 @code {
-    private List<TimeEntryResponse> timeEntries = new List<TimeEntryResponse>();
-    int projectId;
+    int projectId = 0;
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await Http.GetFromJsonAsync<List<TimeEntryResponse>>("api/timeentry");
-        if (result != null) timeEntries = result;
+        await TimeEntryService.GetTimeEntriesByProjectId(projectId);
+        TimeEntryService.OnChange += StateHasChanged;
     }
 
     private string GetDuration(DateTime? start, DateTime? end)
@@ -68,18 +66,8 @@
         StateHasChanged();
     }
 
-    private async Task ProjectChanged(int projectId)
+    public void Dispose()
     {
-        List<TimeEntryResponse>? result = null;
-        if (projectId == 0)
-        {
-            result = await Http.GetFromJsonAsync<List<TimeEntryResponse>>("api/timeentry");
-        }
-        else
-        {
-            result = await Http.GetFromJsonAsync<List<TimeEntryResponse>>($"api/timeentry/project/{projectId}");
-        }
-
-        if (result != null) timeEntries = result;
+        TimeEntryService.OnChange -= StateHasChanged;
     }
 }
