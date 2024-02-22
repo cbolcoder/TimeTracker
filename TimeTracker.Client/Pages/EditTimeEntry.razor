@@ -1,20 +1,38 @@
 ﻿@page "/timeentry"
 @page "/timeentry/{id:int}"
+@inject IProjectService ProjectService
 @inject ITimeEntryService TimeEntryService
 
-<h3>Edit Time Entry</h3>
+@if (Id is null)
+{
+     <h3>Create Time Entry</h3>
+}
+else
+{
+    <h3>Edit Time Entry Id: @Id</h3>
+}
 
-<EditForm Model="timeEntry">
+<EditForm Model="timeEntry" OnSubmit="HandleSubmit">
     <div>
         <label for="startDate">Start</label>
-        <InputDate id="startDate" Type="InputDateType.DateTimeLocal" 
-            @bind-Value="timeEntry.Start" class="form-control" />
+        <InputDate id="startDate" Type="InputDateType.DateTimeLocal"
+                   @bind-Value="timeEntry.Start" class="form-control" />
     </div>
     <div>
         <label for="endDate">End</label>
         <InputDate id="endDate" Type="InputDateType.DateTimeLocal"
                    @bind-Value="timeEntry.End" class="form-control" />
     </div>
+    <div>
+        <label for="project">Project</label>
+        <InputSelect id="project" @bind-Value="timeEntry.ProjectId" class="form-control">
+            @foreach (var project in ProjectService.Projects)
+            {
+                <option value="@project.Id">@project.Name</option>
+            }
+        </InputSelect>
+    </div>
+    <button type="submit" class="btn btn-primary mt-4">Submit</button>
 </EditForm>
 
 @code {
@@ -35,5 +53,13 @@
                     End = result.End
                 };
         }
+    }
+
+    async Task HandleSubmit()
+    {
+        if (Id is null)
+            Console.WriteLine("Create a new Time Entry.");
+        else
+            Console.WriteLine($"Edit Time Entry with Id: {Id}");
     }
 }
