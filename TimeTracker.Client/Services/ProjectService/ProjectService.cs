@@ -14,7 +14,7 @@ namespace TimeTracker.Client.Services.ProjectService
             _http = http;
         }
 
-        public List<ProjectResponse> Projects { get; set; }
+        public List<ProjectResponse> Projects { get; set; } = new List<ProjectResponse>();
 
         public async Task LoadAllProjects()
         {
