@@ -4,15 +4,36 @@
 
 <h3>Edit Time Entry</h3>
 
+<EditForm Model="timeEntry">
+    <div>
+        <label for="startDate">Start</label>
+        <InputDate id="startDate" Type="InputDateType.DateTimeLocal" 
+            @bind-Value="timeEntry.Start" class="form-control" />
+    </div>
+    <div>
+        <label for="endDate">End</label>
+        <InputDate id="endDate" Type="InputDateType.DateTimeLocal"
+                   @bind-Value="timeEntry.End" class="form-control" />
+    </div>
+</EditForm>
+
 @code {
     [Parameter]
     public int? Id { get; set; }
+
+    TimeEntryRequest timeEntry = new TimeEntryRequest();
 
     protected override async Task OnParametersSetAsync()
     {
         if (Id != null)
         {
             var result = await TimeEntryService.GetTimeEntryById((int)Id);
+            timeEntry = new TimeEntryRequest
+                {
+                    ProjectId = result.Project.Id,
+                    Start = result.Start,
+                    End = result.End
+                };
         }
     }
 }

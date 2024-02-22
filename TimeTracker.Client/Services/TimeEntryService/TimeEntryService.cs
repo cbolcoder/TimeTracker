@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Json;
 using TimeTracker.Shared.Models.TimeEntry;
 
-namespace TimeTracker.Client.Services.TimeEntry
+namespace TimeTracker.Client.Services.TimeEntryService
 {
     public class TimeEntryService : ITimeEntryService
     {

@@ -1,6 +1,6 @@
 ﻿using TimeTracker.Shared.Models.TimeEntry;
 
-namespace TimeTracker.Client.Services.TimeEntry
+namespace TimeTracker.Client.Services.TimeEntryService
 {
     public interface ITimeEntryService
     {
