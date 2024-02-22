@@ -1,0 +1,18 @@
+﻿@page "/timeentry"
+@page "/timeentry/{id:int}"
+@inject ITimeEntryService TimeEntryService
+
+<h3>Edit Time Entry</h3>
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id != null)
+        {
+            var result = await TimeEntryService.GetTimeEntryById((int)Id);
+        }
+    }
+}

@@ -1,5 +1,4 @@
 ﻿using System.Net.Http.Json;
-using TimeTracker.Client.Pages;
 using TimeTracker.Shared.Models.TimeEntry;
 
 namespace TimeTracker.Client.Services.TimeEntry
@@ -33,6 +32,11 @@ namespace TimeTracker.Client.Services.TimeEntry
                 TimeEntries = result;
                 OnChange?.Invoke();
             }
+        }
+
+        public async Task<TimeEntryResponse> GetTimeEntryById(int id)
+        {
+            return await _http.GetFromJsonAsync<TimeEntryResponse>($"api/timeentry/{id}");
         }
     }
 }
