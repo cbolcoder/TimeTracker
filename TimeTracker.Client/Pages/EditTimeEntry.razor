@@ -3,6 +3,7 @@
 @inject IProjectService ProjectService
 @inject ITimeEntryService TimeEntryService
 @inject NavigationManager NavigationManager
+@implements IDisposable
 
 @if (Id is null)
 {
@@ -13,7 +14,8 @@ else
     <h3>Edit Time Entry Id: @Id</h3>
 }
 
-<EditForm Model="timeEntry" OnSubmit="HandleSubmit">
+<EditForm Model="timeEntry" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
     <div>
         <label for="startDate">Start</label>
         <InputDate id="startDate" Type="InputDateType.DateTimeLocal"
@@ -32,6 +34,7 @@ else
                 <option value="@project.Id">@project.Name</option>
             }
         </InputSelect>
+        <ValidationMessage For="() => timeEntry.ProjectId" />
     </div>
     <button type="submit" class="btn btn-primary mt-4">Submit</button>
 </EditForm>
@@ -41,6 +44,11 @@ else
     public int? Id { get; set; }
 
     TimeEntryRequest timeEntry = new TimeEntryRequest();
+
+    protected override void OnInitialized()
+    {
+        ProjectService.OnChange += StateHasChanged;
+    }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -65,5 +73,10 @@ else
         }
         else
             Console.WriteLine($"Edit Time Entry with Id: {Id}");
+    }
+
+    public void Dispose()
+    {
+        ProjectService.OnChange -= StateHasChanged;
     }
 }

@@ -35,6 +35,7 @@ a, .btn-link {
 }
 
 .validation-message {
+    margin-top: 4px;
     color: red;
 }
 
