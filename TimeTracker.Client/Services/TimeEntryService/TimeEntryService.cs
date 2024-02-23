@@ -44,5 +44,10 @@ namespace TimeTracker.Client.Services.TimeEntryService
         {
             await _http.PostAsJsonAsync("api/timeentry/", request.Adapt<TimeEntryCreateRequest>());
         }
+
+        public async Task UpdateTimeEntry(int id, TimeEntryRequest request)
+        {
+            await _http.PutAsJsonAsync($"api/timeentry/{id}", request.Adapt<TimeEntryUpdateRequest>());
+        }
     }
 }

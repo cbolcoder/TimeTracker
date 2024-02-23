@@ -72,7 +72,10 @@ else
             NavigationManager.NavigateTo("/timeentries");
         }
         else
-            Console.WriteLine($"Edit Time Entry with Id: {Id}");
+        {
+            await TimeEntryService.UpdateTimeEntry((int)Id, timeEntry);
+            NavigationManager.NavigateTo("/timeentries");
+        }
     }
 
     public void Dispose()

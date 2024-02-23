@@ -9,5 +9,6 @@ namespace TimeTracker.Client.Services.TimeEntryService
         Task GetTimeEntriesByProjectId(int projectId);
         Task<TimeEntryResponse> GetTimeEntryById(int id);
         Task CreateTimeEntry(TimeEntryRequest request);
+        Task UpdateTimeEntry(int id, TimeEntryRequest request);
     }
 }
