@@ -2,6 +2,7 @@
 @page "/timeentry/{id:int}"
 @inject IProjectService ProjectService
 @inject ITimeEntryService TimeEntryService
+@inject NavigationManager NavigationManager
 
 @if (Id is null)
 {
@@ -58,7 +59,10 @@ else
     async Task HandleSubmit()
     {
         if (Id is null)
-            Console.WriteLine("Create a new Time Entry.");
+        {
+            await TimeEntryService.CreateTimeEntry(timeEntry);
+            NavigationManager.NavigateTo("/timeentries");
+        }
         else
             Console.WriteLine($"Edit Time Entry with Id: {Id}");
     }
