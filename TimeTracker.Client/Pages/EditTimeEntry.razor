@@ -5,9 +5,9 @@
 @inject NavigationManager NavigationManager
 @implements IDisposable
 
-@if (Id is null)
+@if (Id == null)
 {
-     <h3>Create Time Entry</h3>
+    <h3>Create Time Entry</h3>
 }
 else
 {
@@ -36,7 +36,18 @@ else
         </InputSelect>
         <ValidationMessage For="() => timeEntry.ProjectId" />
     </div>
-    <button type="submit" class="btn btn-primary mt-4">Submit</button>
+    @if (Id == null)
+    {
+        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+    }
+    else
+    {
+        <button type="submit" class="btn btn-primary mt-3">Update</button>
+        <button type="button" class="btn btn-danger mt-3 mx-1"
+                @onclick="DeleteTimeEntry">
+            Delete
+        </button>
+    }
 </EditForm>
 
 @code {
@@ -66,7 +77,7 @@ else
 
     async Task HandleSubmit()
     {
-        if (Id is null)
+        if (Id == null)
         {
             await TimeEntryService.CreateTimeEntry(timeEntry);
             NavigationManager.NavigateTo("/timeentries");
@@ -74,6 +85,15 @@ else
         else
         {
             await TimeEntryService.UpdateTimeEntry((int)Id, timeEntry);
+            NavigationManager.NavigateTo("/timeentries");
+        }
+    }
+
+    async Task DeleteTimeEntry()
+    {
+        if (Id != null)
+        {
+            await TimeEntryService.DeleteTimeEntry((int)Id);
             NavigationManager.NavigateTo("/timeentries");
         }
     }
