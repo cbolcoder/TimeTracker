@@ -18,7 +18,7 @@ namespace TimeTracker.Client.Services.TimeEntryService
 
         public async Task GetTimeEntriesByProjectId(int projectId)
         {
-            List<TimeEntryResponse>? result = null;
+            List<TimeEntryResponse>? result;
             if (projectId <= 0)
             {
                 result = await _http.GetFromJsonAsync<List<TimeEntryResponse>>("api/timeentry");
