@@ -87,11 +87,6 @@
         StateHasChanged();
     }
 
-    public void Dispose()
-    {
-        TimeEntryService.OnChange -= StateHasChanged;
-    }
-
     private void CreateTimeEntry()
     {
         NavigationManager.NavigateTo("/timeentry");
@@ -100,5 +95,10 @@
     private void EditTimeEntry(int id)
     {
         NavigationManager.NavigateTo($"/timeentry/{id}");
+    }
+
+    public void Dispose()
+    {
+        TimeEntryService.OnChange -= StateHasChanged;
     }
 }

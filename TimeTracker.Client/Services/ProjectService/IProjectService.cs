@@ -6,6 +6,11 @@ namespace TimeTracker.Client.Services.ProjectService
     {
         event Action? OnChange;
         public List<ProjectResponse> Projects { get; set; }
-        Task LoadAllProjects();
+        Task LoadAllProjects(); 
+        Task<ProjectResponse> GetProjectById(int id);
+        Task CreateProject(ProjectRequest request);
+        Task UpdateProject(int id, ProjectRequest request);
+        Task DeleteProject(int id);
+
     }
 }
