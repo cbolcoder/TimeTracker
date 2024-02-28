@@ -54,5 +54,10 @@ namespace TimeTracker.Client.Services.TimeEntryService
         {
             await _http.DeleteAsync($"api/timeentry/{id}");
         }
+
+        public async Task<TimeEntryResponseWrapper> GetTimeEntries(int skip, int limit)
+        {
+            return await _http.GetFromJsonAsync<TimeEntryResponseWrapper>($"api/timeentry/{skip}/{limit}");
+        }
     }
 }

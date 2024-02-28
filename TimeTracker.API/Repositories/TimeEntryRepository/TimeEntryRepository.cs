@@ -27,6 +27,17 @@
                 .Where(t => t.ProjectId == projectId)
                 .ToListAsync();
         }
+
+        public async Task<List<TimeEntry>> GetTimeEntries(int skip, int limit)
+        {
+            return await _dataContext.TimeEntries.Skip(skip).Take(limit).ToListAsync();
+        }
+
+        public async Task<int> GetTimeEntriesCount()
+        {
+            return await _dataContext.TimeEntries.CountAsync();
+        }
+
         public async Task<List<TimeEntry>> CreateTimeEntry(TimeEntry timeEntry)
         {
             _dataContext.TimeEntries.Add(timeEntry);
