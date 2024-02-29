@@ -11,7 +11,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<DataContext>();
+builder.Services.AddDefaultIdentity<User>().AddEntityFrameworkStores<DataContext>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
