@@ -1,6 +1,5 @@
 using Mapster;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -47,16 +46,16 @@ builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<ITimeEntryRepository, TimeEntryRepository>();
 builder.Services.AddScoped<ITimeEntryService, TimeEntryService>();
 
-builder.Services.AddCors(opts => opts.AddDefaultPolicy(bld =>
-{
-    bld
-        .AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader()
-        .WithExposedHeaders("*")
-        .SetIsOriginAllowedToAllowWildcardSubdomains();
-    ;
-}));
+//builder.Services.AddCors(opts => opts.AddDefaultPolicy(bld =>
+//{
+//    bld
+//        .AllowAnyOrigin()
+//        .AllowAnyMethod()
+//        .AllowAnyHeader()
+//        .WithExposedHeaders("*")
+//        .SetIsOriginAllowedToAllowWildcardSubdomains();
+//    ;
+//}));
 
 var app = builder.Build();
 
@@ -82,7 +81,6 @@ app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.UseRouting();
-
 
 app.UseAuthentication();
 app.UseAuthorization();
