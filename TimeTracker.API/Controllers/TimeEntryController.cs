@@ -12,7 +12,7 @@ namespace TimeTracker.API.Controllers
 
         public TimeEntryController(ITimeEntryService timeEntryService)
         {
-            this._timeEntryService = timeEntryService;
+            _timeEntryService = timeEntryService;
         }
 
         [HttpGet]
