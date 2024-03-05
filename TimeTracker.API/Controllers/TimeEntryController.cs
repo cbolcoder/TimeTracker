@@ -6,6 +6,7 @@ namespace TimeTracker.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+
     public class TimeEntryController : ControllerBase
     {
         private readonly ITimeEntryService _timeEntryService;
