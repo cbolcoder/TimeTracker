@@ -3,15 +3,21 @@
     public class TimeEntryRepository : ITimeEntryRepository
     {
         private readonly DataContext _dataContext;
+        private readonly IUserContextService _userContextService;
 
-        public TimeEntryRepository(DataContext dataContext)
+        public TimeEntryRepository(DataContext dataContext, IUserContextService userContextService)
         {
-            this._dataContext = dataContext;
+            _dataContext = dataContext;
+            _userContextService = userContextService;
         }
 
         public async Task<List<TimeEntry>> GetAllTimeEntries()
         {
-            return await _dataContext.TimeEntries.ToListAsync();
+            var userId = _userContextService.GetUserId();
+            if (userId == null)
+                return new List<TimeEntry>();
+
+            return await _dataContext.TimeEntries.Where(t => t.User.Id == userId).ToListAsync();
         }
 
 
