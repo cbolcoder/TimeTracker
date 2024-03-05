@@ -46,6 +46,12 @@
 
         public async Task<List<TimeEntry>> CreateTimeEntry(TimeEntry timeEntry)
         {
+            var user = await _userContextService.GetUserAsync();
+            if (user == null)
+                throw new EntityNotFoundException("User account was not found.");
+            
+            timeEntry.User = user;
+
             _dataContext.TimeEntries.Add(timeEntry);
             await _dataContext.SaveChangesAsync();
 
