@@ -1,4 +1,6 @@
-﻿using System.Net.Http.Json;
+﻿using Blazored.Toast;
+using Blazored.Toast.Services;
+using System.Net.Http.Json;
 using TimeTracker.Shared.Models.Account;
 
 namespace TimeTracker.Client.Services.AuthService
@@ -6,15 +8,36 @@ namespace TimeTracker.Client.Services.AuthService
     public class AuthService : IAuthService
     {
         private readonly HttpClient _http;
+        private readonly IToastService _toastService;
 
-        public AuthService(HttpClient http)
+        public AuthService(HttpClient http, IToastService toastService)
         {
             _http = http;
+            _toastService = toastService;
         }
 
         public async Task Register(AccountRegistrationRequest request)
         {
-            await _http.PostAsJsonAsync("api/account", request);
+            var result = await _http.PostAsJsonAsync("api/account", request);
+            if (result != null)
+            {
+                var response = await result.Content.ReadFromJsonAsync<AccountRegistrationResponse>();
+                if (!response.IsSuccessful && response.Errors != null)
+                {
+                    foreach (var error in response.Errors)
+                    {
+                        _toastService.ShowError(error);
+                    }
+                }
+                else if (!response.IsSuccessful)
+                {
+                    _toastService.ShowError("An unexpected error occurred.");
+                }
+                else
+                {
+                    _toastService.ShowSuccess("Successfully registered! Login to continue.");
+                }
+            }
         }
     }
 }
