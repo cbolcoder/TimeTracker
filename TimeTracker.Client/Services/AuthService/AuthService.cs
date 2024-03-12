@@ -1,4 +1,5 @@
-﻿using Blazored.Toast.Services;
+﻿using Blazored.LocalStorage;
+using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http.Json;
 using TimeTracker.Shared.Models.Account;
@@ -11,12 +12,14 @@ namespace TimeTracker.Client.Services.AuthService
         private readonly HttpClient _http;
         private readonly IToastService _toastService;
         private readonly NavigationManager _navigationManager;
+        private readonly ILocalStorageService _localStorageService;
 
-        public AuthService(HttpClient http, IToastService toastService, NavigationManager navigationManager)
+        public AuthService(HttpClient http, IToastService toastService, NavigationManager navigationManager, ILocalStorageService localStorageService)
         {
             _http = http;
             _toastService = toastService;
             _navigationManager = navigationManager;
+            _localStorageService = localStorageService;
         }
 
         public async Task Login(LoginRequest request)
@@ -37,6 +40,10 @@ namespace TimeTracker.Client.Services.AuthService
                 {
                     _toastService.ShowSuccess("Login successful!");
                     _navigationManager.NavigateTo("timeentries");
+                    if(response.Token != null)
+                    {
+                        await _localStorageService.SetItemAsStringAsync("authToken", response.Token);
+                    }
                 }
             }
 
