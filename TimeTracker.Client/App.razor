@@ -1,4 +1,4 @@
-﻿@inject IProjectService ProjectService
+﻿@* @inject IProjectService ProjectService *@
 
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
@@ -14,8 +14,8 @@
 </Router>
 
 @code {
-    protected override async Task OnInitializedAsync()
-    {
-        //await ProjectService.LoadAllProjects();
-    }
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     //await ProjectService.LoadAllProjects();
+    // }
 }
