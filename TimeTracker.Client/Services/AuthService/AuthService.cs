@@ -53,6 +53,13 @@ namespace TimeTracker.Client.Services.AuthService
 
         }
 
+        public async Task Logout()
+        {
+            await _localStorageService.RemoveItemAsync("authToken");
+            await _authStateProvider.GetAuthenticationStateAsync();
+            _navigationManager.NavigateTo("/login");
+        }
+
         public async Task Register(AccountRegistrationRequest request)
         {
             var result = await _http.PostAsJsonAsync("api/account", request);

@@ -7,5 +7,6 @@ namespace TimeTracker.Client.Services.AuthService
     {
         Task Register(AccountRegistrationRequest request);
         Task Login(LoginRequest request);
+        Task Logout();
     }
 }

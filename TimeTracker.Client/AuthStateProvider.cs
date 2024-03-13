@@ -36,6 +36,8 @@ namespace TimeTracker.Client
                     new ClaimsIdentity(ParseClaimsFromJwt(authToken), "jwt")));
             }
 
+            NotifyAuthenticationStateChanged(Task.FromResult(authState));
+
             return authState;
         }
 

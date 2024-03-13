@@ -22,4 +22,6 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<ITimeEntryService, TimeEntryService>();
 
+builder.Services.AddAuthorizationCore();
+
 await builder.Build().RunAsync();
