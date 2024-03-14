@@ -1,5 +1,6 @@
 using Mapster;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
@@ -25,13 +26,15 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDefaultIdentity<User>(options =>
-{
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireDigit = false;
-    options.Password.RequireUppercase = false;
-    options.User.RequireUniqueEmail = true;
-}).AddEntityFrameworkStores<DataContext>();
+builder.Services.AddIdentity<User, IdentityRole>(options =>
+    {
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireDigit = false;
+        options.Password.RequireUppercase = false;
+        options.User.RequireUniqueEmail = true;
+    })
+    .AddEntityFrameworkStores<DataContext>()
+    .AddDefaultTokenProviders();
 
 builder.Services.AddAuthentication(options =>
 {
