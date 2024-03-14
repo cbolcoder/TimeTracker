@@ -22,7 +22,10 @@ namespace TimeTracker.API.Services.ProjectService
         {
             var result = await _projectRepo.GetProjectById(id);
 
-            if (result is null) return null;
+            if (result is null)
+            {
+                return null;
+            }
 
             return result.Adapt<ProjectResponse>();
         }

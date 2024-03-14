@@ -7,7 +7,6 @@ namespace TimeTracker.Client.Services.ProjectService
     public class ProjectService : IProjectService
     {
         private readonly HttpClient _http;
-
         public event Action? OnChange;
 
         public ProjectService(HttpClient http)

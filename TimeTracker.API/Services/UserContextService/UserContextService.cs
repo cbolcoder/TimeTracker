@@ -18,7 +18,9 @@ namespace TimeTracker.API.Services.UserContextService
         {
             var httpContextUser = _httpContextAccessor.HttpContext?.User;
             if (httpContextUser == null)
+            {
                 return null;
+            }
 
             return await _userManager.GetUserAsync(httpContextUser);
         }

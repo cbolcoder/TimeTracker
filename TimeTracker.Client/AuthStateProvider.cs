@@ -28,7 +28,8 @@ namespace TimeTracker.Client
                 _http.DefaultRequestHeaders.Authorization = null;
                 authState = new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
             }
-            else //authenticated
+            //authenticated
+            else
             {
                 _http.DefaultRequestHeaders.Authorization = 
                     new AuthenticationHeaderValue("Bearer", authToken);
