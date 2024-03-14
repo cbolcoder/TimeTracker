@@ -1,4 +1,5 @@
-﻿@inject IProjectService ProjectService
+﻿@using System.Security.Claims
+@inject IProjectService ProjectService
 @inject AuthenticationStateProvider AuthStateProvider
 @implements IDisposable
 
@@ -32,9 +33,16 @@
     public async void OnAuthStateChanged(Task<AuthenticationState> task)
     {
         var state = await task;
-        if(state != null && state.User.Identity!.IsAuthenticated)
+        if (state != null && state.User.Identity!.IsAuthenticated)
         {
-            await ProjectService.LoadAllProjects();
+            var roles = state.User.Claims
+                .Where(c => c.Type == ClaimTypes.Role)
+                .Select(c => c.Value).ToList();
+
+            if (roles.Contains("Admin"))
+            {
+                await ProjectService.LoadAllProjects();
+            }
         }
     }
 

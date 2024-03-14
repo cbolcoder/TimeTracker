@@ -31,10 +31,8 @@ namespace TimeTracker.Client
             //authenticated
             else
             {
-                _http.DefaultRequestHeaders.Authorization = 
-                    new AuthenticationHeaderValue("Bearer", authToken);
-                authState = new AuthenticationState(new ClaimsPrincipal(
-                    new ClaimsIdentity(ParseClaimsFromJwt(authToken), "jwt")));
+                _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
+                authState = new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(ParseClaimsFromJwt(authToken), "jwt")));
             }
 
             NotifyAuthenticationStateChanged(Task.FromResult(authState));
@@ -44,7 +42,7 @@ namespace TimeTracker.Client
 
         private byte[] ParseBase64WithoutPadding(string base64)
         {
-            switch(base64.Length % 4)
+            switch (base64.Length % 4)
             {
                 case 2: base64 += "=="; break;
                 case 3: base64 += "="; break;
@@ -54,12 +52,10 @@ namespace TimeTracker.Client
 
         private IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
         {
-            var payload = jwt.Split('.')[0];
+            var payload = jwt.Split('.')[1];
             var jsonBytes = ParseBase64WithoutPadding(payload);
-            var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonBytes);
-
+            var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
             var claims = keyValuePairs!.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString()!));
-
             return claims;
         }
     }
