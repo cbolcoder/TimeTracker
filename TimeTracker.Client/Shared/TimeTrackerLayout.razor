@@ -28,7 +28,7 @@
 
             <div class="flex items-center gap-4">
                 <LoginDisplay />
-                <button class="block rounded bg-gray-100 p-2.5 text-gray-600 transition hover:text-gray-600/75 md:hidden">
+                <button @onclick="ToggleMobileNavMenu" class="block rounded bg-gray-100 p-2.5 text-gray-600 transition hover:text-gray-600/75 md:hidden">
                     <span class="sr-only">Toggle menu</span>
                     <svg xmlns="http://www.w3.org/2000/svg"
                          class="h-5 w-5"
@@ -42,8 +42,24 @@
             </div>
         </div>
     </div>
+    <div>
+        <ul class="space-y-1 @NavMenuCssClass">
+            <MobileMenu OnLinkClicked="ToggleMobileNavMenu" />
+        </ul>
+    </div>
 </header>
 
 <main class="mx-4">
     @Body
 </main>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "hidden" : null;
+
+    private void ToggleMobileNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}
