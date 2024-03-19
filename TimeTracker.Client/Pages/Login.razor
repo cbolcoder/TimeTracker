@@ -17,11 +17,31 @@
     <button type="submit" class="block rounded-md bg-teal-600 px-5 py-2.5 font-medium text-white transition hover:bg-teal-700 mt-2">Login</button>
 </EditForm>
 
+@if(loginFailed)
+{
+    <div>
+        <span class="text-xs text-red-600 font-bold my-1">@errorMessage</span>
+    </div>
+}
+
 @code {
     LoginRequest loginRequest = new LoginRequest();
+    bool loginFailed = false;
+    string errorMessage = string.Empty;
 
     async Task HandleSubmit()
     {
-        await AuthService.Login(loginRequest);
+        loginFailed = false;
+        var response = await AuthService.Login(loginRequest);
+        if (!response.IsSuccessful && response.Error != null)
+        {
+            errorMessage = response.Error;
+            loginFailed = true;
+        }
+        else if (!response.IsSuccessful)
+        {
+            errorMessage = "Login Failed";
+            loginFailed = true;
+        }
     }
 }
