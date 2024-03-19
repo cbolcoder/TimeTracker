@@ -11,14 +11,16 @@ namespace TimeTracker.Client.Services.TimeEntryService
 
         public event Action? OnChange;
 
+        public TimeSpan TotalDuration { get; set; }
+
         public TimeEntryService(HttpClient http)
         {
             _http = http;
         }
 
-        public async Task GetTimeEntriesByProjectId(int projectId)
+        public async Task GetTimeEntriesByProject(int projectId)
         {
-            List<TimeEntryResponse>? result;
+            List<TimeEntryResponse>? result = null;
             if (projectId <= 0)
             {
                 result = await _http.GetFromJsonAsync<List<TimeEntryResponse>>("api/timeentry");
@@ -28,11 +30,7 @@ namespace TimeTracker.Client.Services.TimeEntryService
                 result = await _http.GetFromJsonAsync<List<TimeEntryResponse>>($"api/timeentry/project/{projectId}");
             }
 
-            if (result != null)
-            {
-                TimeEntries = result;
-                OnChange?.Invoke();
-            }
+            SetTimeEntries(result);
         }
 
         public async Task<TimeEntryResponse> GetTimeEntryById(int id)
@@ -55,9 +53,53 @@ namespace TimeTracker.Client.Services.TimeEntryService
             await _http.DeleteAsync($"api/timeentry/{id}");
         }
 
-        public async Task<TimeEntryResponseWrapper> GetTimeEntries(int skip, int limit)
+        public async Task GetTimeEntriesByYear(int year)
         {
-            return await _http.GetFromJsonAsync<TimeEntryResponseWrapper>($"api/timeentry/{skip}/{limit}");
+            var result = await _http.GetFromJsonAsync<List<TimeEntryResponse>>($"api/timeentry/year/{year}");
+            SetTimeEntries(result);
+        }
+
+        public async Task GetTimeEntriesByMonth(int month, int year)
+        {
+            var result = await _http.GetFromJsonAsync<List<TimeEntryResponse>>($"api/timeentry/month/{month}/{year}");
+            SetTimeEntries(result);
+        }
+
+        public async Task GetTimeEntriesByDay(int day, int month, int year)
+        {
+            var result = await _http.GetFromJsonAsync<List<TimeEntryResponse>>($"api/timeentry/day/{day}/{month}/{year}");
+            SetTimeEntries(result);
+        }
+
+        private void SetTimeEntries(List<TimeEntryResponse>? result)
+        {
+            if (result != null)
+            {
+                TimeEntries = result;
+                CalculateTotalDuration();
+                OnChange?.Invoke();
+            }
+        }
+
+        private TimeSpan CalculateDuration(TimeEntryResponse timeEntry)
+        {
+            if (timeEntry.End == null || timeEntry.End.Value < timeEntry.Start)
+            {
+                return new TimeSpan();
+            }
+
+            TimeSpan duration = timeEntry.End.Value - timeEntry.Start;
+
+            return duration;
+        }
+
+        private void CalculateTotalDuration()
+        {
+            TotalDuration = new TimeSpan();
+            foreach (var timeEntry in TimeEntries)
+            {
+                TotalDuration += CalculateDuration(timeEntry);
+            }
         }
     }
 }

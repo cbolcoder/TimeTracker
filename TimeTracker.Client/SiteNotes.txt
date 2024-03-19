@@ -1,2 +1,5 @@
 ﻿Tailwind command to run while developing-
 	npx tailwindcss -i .\Styles\app.css -o .\wwwroot\css\app.css --watch
+
+Tailwind to minify css file-
+	npx tailwindcss -i .\Styles\app.css -o .\wwwroot\css\app.css --minify
