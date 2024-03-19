@@ -19,35 +19,29 @@ else
 
 <EditForm Model="project" OnValidSubmit="HandleSubmit">
     <DataAnnotationsValidator />
-    <div>
-        <label for="name>">Name</label>
-        <InputText id="name" @bind-Value="project.Name" class="form-control"></InputText>
-        <ValidationMessage For="() => project.Name" />
+    <CustomInputText Id="name"
+                     Label="Name"
+                     @bind-Value="project.Name"
+                     ValidationFor="() => project.Name" />
+    <CustomInputTextArea Id="description"
+                         Label="Description"
+                         @bind-Value="project.Description"
+                         ValidationFor="() => project.Description" />
+    <CustomInputDateNullable Id="startDate"
+                             Label="Start Date"
+                             @bind-Value="project.StartDate"
+                             ValidationFor="() => project.StartDate" />
+    <CustomInputDateNullable Id="endDate"
+                             Label="End Date"
+                             @bind-Value="project.EndDate"
+                             ValidationFor="() => project.EndDate" />
+    <div class="flex gap-4">
+        <CustomButton Text="Submit" Type="submit" AddMarginTop />
+        @if (Id is not null)
+        {
+            <CustomButton Text="Delete" Level="CustomButton.ButtonLevel.Delete" AddMarginTop OnClick="DeleteProject" />
+        }
     </div>
-    <div>
-        <label for="description>">Description</label>
-        <InputText id="description" @bind-Value="project.Description" class="form-control"></InputText>
-    </div>
-    <div>
-        <label for="startDate>">Start</label>
-        <InputDate id="startDate" @bind-Value="project.StartDate" class="form-control"></InputDate>
-    </div>
-    <div>
-        <label for="endDate>">End</label>
-        <InputDate id="endDate" @bind-Value="project.EndDate" class="form-control"></InputDate>
-    </div>
-    @if (Id == null)
-    {
-        <button type="submit" class="btn btn-primary mt-3">Submit</button>
-    }
-    else
-    {
-        <button type="submit" class="btn btn-primary mt-3">Update</button>
-        <button type="button" class="btn btn-danger mt-3 mx-1"
-                @onclick="DeleteProject">
-            Delete
-        </button>
-    }
 </EditForm>
 
 @code {
@@ -67,7 +61,7 @@ else
 
     async Task HandleSubmit()
     {
-        if(Id == null)
+        if (Id == null)
         {
             await ProjectService.CreateProject(project);
             NavigationManager.NavigateTo("/projects");
