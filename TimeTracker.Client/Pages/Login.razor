@@ -14,13 +14,13 @@
                      @bind-Value="loginRequest.Password"
                      ValidationFor="() => loginRequest.Password"
                      Type="password" />
-    <button type="submit" class="block rounded-md bg-teal-600 px-5 py-2.5 font-medium text-white transition hover:bg-teal-700 mt-2">Login</button>
+    <CustomButton Text="Login" Type="submit" AddMarginTop />
 </EditForm>
 
-@if(loginFailed)
+@if (loginFailed)
 {
     <div>
-        <span class="text-xs text-red-600 font-bold my-1">@errorMessage</span>
+        <span class="text-sm text-red-600 font-extrabold my-1 mt-3">@errorMessage</span>
     </div>
 }
 
