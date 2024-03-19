@@ -5,16 +5,15 @@
 
 <EditForm Model="loginRequest" OnValidSubmit="HandleSubmit">
     <DataAnnotationsValidator />
-    <div>
-        <label for="name" class="block font-medium text-gray-700 mt-2">Name</label>
-        <InputText id="name" @bind-Value="loginRequest.UserName" class="mt-1 p-2 w-full rounded-md border-gray-200 shadow-sm" />
-        <ValidationMessage For="() => loginRequest.UserName" class="text-sm text-red-600 font-extrabold my-1" />
-    </div>
-    <div>
-        <label for="password" class="block font-medium text-gray-700 mt-2">Password</label>
-        <InputText id="password" type="password" @bind-Value="loginRequest.Password" class="mt-1 p-2 w-full rounded-md border-gray-200 shadow-sm" />
-        <ValidationMessage For="() => loginRequest.Password" class="text-sm text-red-600 font-extrabold my-1" />
-    </div>
+    <CustomInputText Label="Name"
+                     Id="name"
+                     @bind-Value="loginRequest.UserName"
+                     ValidationFor="() => loginRequest.UserName" />
+    <CustomInputText Label="Password"
+                     Id="password"
+                     @bind-Value="loginRequest.Password"
+                     ValidationFor="() => loginRequest.Password"
+                     Type="password" />
     <button type="submit" class="block rounded-md bg-teal-600 px-5 py-2.5 font-medium text-white transition hover:bg-teal-700 mt-2">Login</button>
 </EditForm>
 
