@@ -1,6 +1,7 @@
 ﻿@page "/login"
 @inject IAuthService AuthService
 
+<div class="sm:px-80">
 <h3>Login</h3>
 
 <EditForm Model="loginRequest" OnValidSubmit="HandleSubmit">
@@ -16,6 +17,7 @@
                      Type="password" />
     <CustomButton Text="Login" Type="submit" AddMarginTop />
 </EditForm>
+</div>
 
 @if (loginFailed)
 {
