@@ -21,7 +21,10 @@ namespace TimeTracker.API.Services.Login
 
         public async Task<LoginResponse> Login(LoginRequest request)
         {
-            var result = await _signInManager.PasswordSignInAsync(request.UserName, request.Password, false, false);
+            var result = await _signInManager.PasswordSignInAsync(request.UserName,
+                                                                    request.Password,
+                                                                    false,
+                                                                    false);
             if (!result.Succeeded)
             {
                 return new LoginResponse(false, "Username or password is incorrect.");

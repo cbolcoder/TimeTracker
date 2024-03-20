@@ -6,14 +6,13 @@ namespace TimeTracker.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = "Admin")]
-
     public class ProjectController : ControllerBase
     {
         private readonly IProjectService _projectService;
 
         public ProjectController(IProjectService projectService)
         {
-            this._projectService = projectService;
+            _projectService = projectService;
         }
 
         [HttpGet]
@@ -26,9 +25,10 @@ namespace TimeTracker.API.Controllers
         public async Task<ActionResult<ProjectResponse>> GetProjectById(int id)
         {
             var result = await _projectService.GetProjectById(id);
-
-            if (result is null) return NotFound($"Entity with id:{id} was not found.");
-
+            if (result is null)
+            {
+                return NotFound("Project with the given ID was not found.");
+            }
             return Ok(result);
         }
 
@@ -42,19 +42,21 @@ namespace TimeTracker.API.Controllers
         public async Task<ActionResult<List<ProjectResponse>>> UpdateProject(int id, ProjectUpdateRequest project)
         {
             var result = await _projectService.UpdateProject(id, project);
-
-            if (result is null) return NotFound($"Entity with id:{id} was not found.");
-
+            if (result is null)
+            {
+                return NotFound("Project with the given ID was not found.");
+            }
             return Ok(result);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteProject(int id)
+        public async Task<ActionResult<List<ProjectResponse>>> DeleteProject(int id)
         {
             var result = await _projectService.DeleteProject(id);
-
-            if (result is null) return NotFound($"Entity with id:{id} was not found.");
-
+            if (result is null)
+            {
+                return NotFound("Project with the given ID was not found.");
+            }
             return Ok(result);
         }
     }
