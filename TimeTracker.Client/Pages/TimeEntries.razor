@@ -5,6 +5,7 @@
 @attribute [Authorize]
 
 <PageTitle>Time Entries</PageTitle>
+
 <h3>Time Entries</h3>
 
 <TimeEntryTabs TabChanged="TabChanged" />
@@ -45,7 +46,8 @@
     <span class="font-bold text-lg">&nbsp;Total: @GetTotalDuration()</span>
 </div>
 
-@if (CurrentFilterType == TimeEntryTabs.TimeEntryFilterType.Year)
+@if (CurrentFilterType == TimeEntryTabs.TimeEntryFilterType.Year
+     || CurrentFilterType == TimeEntryTabs.TimeEntryFilterType.Project)
 {
     <TimeEntryYearChart />
 }
