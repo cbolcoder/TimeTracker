@@ -1,9 +1,9 @@
 ﻿<AuthorizeView>
-    <Authorize>
+    <Authorized>
         <li>
             <MobileMenuLink Path="timeentries" Text="Time Entries" OnLinkClicked="OnLinkClicked" />
         </li>
-    </Authorize>
+    </Authorized>
 </AuthorizeView>
 <AuthorizeView Roles="Admin">
     <Authorized>
@@ -28,5 +28,4 @@
 @code {
     [Parameter]
     public EventCallback OnLinkClicked { get; set; }
-
 }
